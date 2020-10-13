@@ -46,14 +46,24 @@ class Search extends Component {
             </View>
         )
     }
+    _searchFilms(){
+      this.page=0
+      this.totalPages=0
+      this.setState({
+        films:[]
+      }, () => {
+        console.log("Page : " + this.page + " / TotalPages : " + this.totalPages + " / Nombre de films : " + this.state.films.length)
+        this._loadFilms() 
+      })
+    }
 
     render() {
         return (
             <View style={styles.main_container}>
-                <TextInput onSubmitEditing={() => this._loadFilms()}
+                <TextInput onSubmitEditing={() => this._searchFilms()}
                            onChangeText={(text) => this._searchTextInputChanged(text)} style={styles.textinput}
                            placeholder='Titre du film'/>
-                <Button title='Rechercher' onPress={() => this._loadFilms()}/>
+                <Button title='Rechercher' onPress={() => this._searchFilms()}/>
                 {/* Ici j'ai simplement repris l'exemple sur la documentation de la FlatList */}
                 <FlatList
                     data={this.state.films}
