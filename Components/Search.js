@@ -53,7 +53,7 @@ class Search extends Component {
         films:[]
       }, () => {
         console.log("Page : " + this.page + " / TotalPages : " + this.totalPages + " / Nombre de films : " + this.state.films.length)
-        this._loadFilms() 
+        this._loadFilms()
       })
     }
 
@@ -87,7 +87,6 @@ class Search extends Component {
 const
     styles = StyleSheet.create({
         main_container: {
-            marginTop: 20,
             flex: 1
         },
         textinput: {
