@@ -46,6 +46,12 @@ class Search extends Component {
             </View>
         )
     }
+
+    _displayDetailForFilm =(idFilm)=>{
+      console.log("Display film with id" + idFilm);
+      this.props.navigation.navigate("FilmDetail", {idFilm: idFilm});
+    }
+
     _searchFilms(){
       this.page=0
       this.totalPages=0
@@ -76,7 +82,7 @@ class Search extends Component {
                         }
                     }}
                     keyExtractor={(item) => item.id.toString()}
-                    renderItem={({item}) => <FilmItem film={item}/>}
+                    renderItem={({item}) => <FilmItem film={item} displayDetailForFilm={this._displayDetailForFilm}/>}
                 />
                 {this._displayLoading()}
             </View>
