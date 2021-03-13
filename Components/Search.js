@@ -18,8 +18,6 @@ class Search extends Component {
     }
 
     _loadFilms() {
-        this.setState({isLoading: true})
-        console.log("Début du Chargment des films \n")
         if (this.serachedText.length > 0) {
             getFilmsFromApiWithSearchedText(this.serachedText, this.page + 1).then(data => {
                 this.page = data.page
@@ -30,7 +28,6 @@ class Search extends Component {
                     isLoading: false
                 })
             });
-            console.log("Fin du chargement des films \n");
         }
     }
 
@@ -39,12 +36,13 @@ class Search extends Component {
     }
 
     _displayLoading() {
+      if (this.state.isLoading) {
         return (
-            <View style={styles.loading_container}>
-                <ActivityIndicator size='large'/>
-                {/* Le component ActivityIndicator possède une propriété size pour définir la taille du visuel de chargement : small ou large. Par défaut size vaut small, on met donc large pour que le chargement soit bien visible */}
-            </View>
+          <View style={styles.loading_container}>
+            <ActivityIndicator size='large' />
+          </View>
         )
+      }
     }
 
     _displayDetailForFilm =(idFilm)=>{
@@ -58,21 +56,32 @@ class Search extends Component {
       this.setState({
         films:[]
       }, () => {
-        console.log("Page : " + this.page + " / TotalPages : " + this.totalPages + " / Nombre de films : " + this.state.films.length)
-        this._loadFilms()
+          this._loadFilms()
       })
     }
 
     render() {
         return (
             <View style={styles.main_container}>
-                <TextInput onSubmitEditing={() => this._searchFilms()}
-                           onChangeText={(text) => this._searchTextInputChanged(text)} style={styles.textinput}
+                <TextInput
+                           onSubmitEditing={() => this._searchFilms()}
+                           onChangeText={(text) => this._searchTextInputChanged(text)}
+                           style={styles.textinput}
                            placeholder='Titre du film'/>
                 <Button title='Rechercher' onPress={() => this._searchFilms()}/>
                 {/* Ici j'ai simplement repris l'exemple sur la documentation de la FlatList */}
                 <FlatList
                     data={this.state.films}
+                    //J'ai ajouter key={data} pour résoudre ce problème: Encountered two children with the same key
+                    key={data}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({item}) =>
+                      <FilmItem
+                        film={item}
+                        //J'ai ajouter key={data} pour résoudre ce problème: Encountered two children with the same key
+                        key={item}
+                        displayDetailForFilm={this._displayDetailForFilm}
+                      />}
                     onEndReachedThreshold={0.5}
                     onEndReached={() => {
                         console.log(this.totalPages + "Pages au totale\n");
@@ -81,8 +90,6 @@ class Search extends Component {
                             this._loadFilms()
                         }
                     }}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({item}) => <FilmItem film={item} displayDetailForFilm={this._displayDetailForFilm}/>}
                 />
                 {this._displayLoading()}
             </View>

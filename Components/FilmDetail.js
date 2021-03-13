@@ -1,7 +1,8 @@
 // Components/FilmDetail.js
 
 import React from 'react'
-import { StyleSheet, View, Text , ActivityIndicator} from 'react-native'
+import { StyleSheet, View, Text , ActivityIndicator, ScrollView} from 'react-native'
+import {getFilmDetailFromApi} from '../API/TMDBApi'
 
 class FilmDetail extends React.Component {
   constructor(props) {
@@ -11,8 +12,32 @@ class FilmDetail extends React.Component {
       isLoading: true
     }
   }
+    componentDidMount() {
+       console.log("Component FilmDetail monté");
+       getFilmDetailFromApi(this.props.route.params.idFilm).then(data=>{
+         this.setState({
+           film: data,
+           isLoading: false
+         })
+       })
+     }
+
+     _displayFilm(){
+        console.log("Display Film");
+       const film = this.state.films
+       if (film != undefined)
+       {
+         return (
+           <ScrollView style={styles.scrollview_container}>
+              <Text>{this.state.film.title}</Text>
+           </ScrollView>
+         )
+       }
+     }
 
   _displayLoading() {
+
+       console.log("Display Loadin");
     if (this.state.isLoading) {
       // Si isLoading vaut true, on affiche le chargement à l'écran
       return (
@@ -28,10 +53,14 @@ class FilmDetail extends React.Component {
     const idFilm = this.props.route.params.idFilm
     return (
       <View style={styles.main_container}>
+      //{this._displayFilm()}
       {this._displayLoading()}
       </View>
     )
   }
+
+
+
 }
 
 const styles = StyleSheet.create({
@@ -46,6 +75,9 @@ const styles = StyleSheet.create({
       bottom: 0,
       alignItems: 'center',
       justifyContent: 'center'
+  },
+  scrollview_container: {
+    flex: 1,
   }
 })
 
