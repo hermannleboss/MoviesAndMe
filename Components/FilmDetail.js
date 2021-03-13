@@ -18,18 +18,19 @@ class FilmDetail extends React.Component {
          this.setState({
            film: data,
            isLoading: false
-         })
+         })//,
+         //console.log(this.state.film.title);
        })
      }
 
      _displayFilm(){
-        console.log("Display Film");
-       const film = this.state.films
-       if (film != undefined)
-       {
+      console.log("Display Film");
+      if (this.state.film != undefined) {
          return (
-           <ScrollView style={styles.scrollview_container}>
-              <Text>{this.state.film.title}</Text>
+           <ScrollView
+              style={styles.scrollview_container}
+              key={styles.scrollview_container}>
+              <Text key={this.state.film.id}> {this.state.film.title}</Text>
            </ScrollView>
          )
        }
@@ -49,12 +50,10 @@ class FilmDetail extends React.Component {
   }
 
   render() {
-
-    const idFilm = this.props.route.params.idFilm
     return (
       <View style={styles.main_container}>
-      //{this._displayFilm()}
       {this._displayLoading()}
+      {this._displayFilm()}
       </View>
     )
   }
