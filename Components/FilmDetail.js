@@ -1,8 +1,8 @@
 // Components/FilmDetail.js
 
 import React from 'react'
-import { StyleSheet, View, Text , ActivityIndicator, ScrollView} from 'react-native'
-import {getFilmDetailFromApi} from '../API/TMDBApi'
+import { StyleSheet, View, Text, Image , ActivityIndicator, ScrollView} from 'react-native'
+import {getFilmDetailFromApi, getImageFromApi} from '../API/TMDBApi'
 
 class FilmDetail extends React.Component {
   constructor(props) {
@@ -30,12 +30,22 @@ class FilmDetail extends React.Component {
            <ScrollView
               style={styles.scrollview_container}
               key={styles.scrollview_container}>
-              <Text key={this.state.film.id}> {this.state.film.title}</Text>
+              <Image
+                  style={styles.image}
+                  source={{uri: getImageFromApi(this.state.film.poster_path)}}
+                  />
+              <Text style={styles.title_text}> {this.state.film.title}</Text>
+              <Text style={styles.description_text}> {this.state.film.overview}</Text>
+              <Text style={styles.default_text}> Sorti Le {this.state.film.release_date}</Text>
+              <Text style={styles.default_text}> Note{this.state.film.vote_average}/10</Text>
+              <Text style={styles.default_text}> Nombre de votes{this.state.film.vote_count}</Text>
+              <Text style={styles.default_text}> Budget{this.state.film.budget}</Text>
+              <Text style={styles.default_text}> Genre(s) {this.state.film.release_date}</Text>
+              <Text style={styles.default_text}> Compagnie(s){this.state.film.release_date}</Text>
            </ScrollView>
          )
        }
      }
-
   _displayLoading() {
 
        console.log("Display Loadin");
@@ -75,8 +85,35 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center'
   },
+  image: {
+    height: 169,
+    margin: 5
+  },
   scrollview_container: {
     flex: 1,
+  },
+  title_text: {
+    fontWeight: 'bold',
+    fontSize: 35,
+    flex: 1,
+    flexWrap: 'wrap',
+    marginLeft: 5,
+    marginRight: 5,
+    marginTop: 10,
+    marginBottom: 10,
+    color: '#000000',
+    textAlign: 'center'
+  },
+  description_text: {
+    fontStyle: 'italic',
+    color: '#666666',
+    margin: 5,
+    marginBottom: 15
+  },
+  default_text: {
+    marginLeft: 5,
+    marginRight: 5,
+    marginTop: 5,
   }
 })
 
