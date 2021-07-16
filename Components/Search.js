@@ -18,6 +18,7 @@ class Search extends Component {
     }
 
     _loadFilms() {
+    this.setState({isLoading:true})
         if (this.serachedText.length > 0) {
             getFilmsFromApiWithSearchedText(this.serachedText, this.page + 1).then(data => {
                 this.page = data.page
@@ -37,9 +38,10 @@ class Search extends Component {
 
     _displayLoading() {
       if (this.state.isLoading) {
+      console.log("Display loading");
         return (
           <View style={styles.loading_container}>
-            <ActivityIndicator size='large' />
+            <ActivityIndicator size="large" color="#00ff00" />
           </View>
         )
       }
@@ -61,6 +63,7 @@ class Search extends Component {
     }
 
     render() {
+    console.log(this.state.isLoading)
         return (
             <View style={styles.main_container}>
                 <TextInput
@@ -80,6 +83,7 @@ class Search extends Component {
                         film={item}
                         //J'ai ajouter key={data} pour résoudre ce problème: Encountered two children with the same key
                         key={item}
+                        keyExtractor={(item2) => item.title.toString()}
                         displayDetailForFilm={this._displayDetailForFilm}
                       />}
                     onEndReachedThreshold={0.5}

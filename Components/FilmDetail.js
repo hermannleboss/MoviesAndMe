@@ -3,6 +3,8 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image , ActivityIndicator, ScrollView} from 'react-native'
 import {getFilmDetailFromApi, getImageFromApi} from '../API/TMDBApi'
+import moment from 'moment'
+import numeral from 'numeral'
 
 class FilmDetail extends React.Component {
   constructor(props) {
@@ -36,12 +38,18 @@ class FilmDetail extends React.Component {
                   />
               <Text style={styles.title_text}> {this.state.film.title}</Text>
               <Text style={styles.description_text}> {this.state.film.overview}</Text>
-              <Text style={styles.default_text}> Sorti Le {this.state.film.release_date}</Text>
+              <Text style={styles.default_text}>Sorti le {moment(new Date(this.state.film.release_date)).format('DD/MM/YYYY')}</Text>
               <Text style={styles.default_text}> Note{this.state.film.vote_average}/10</Text>
               <Text style={styles.default_text}> Nombre de votes{this.state.film.vote_count}</Text>
-              <Text style={styles.default_text}> Budget{this.state.film.budget}</Text>
-              <Text style={styles.default_text}> Genre(s) {this.state.film.release_date}</Text>
-              <Text style={styles.default_text}> Compagnie(s){this.state.film.release_date}</Text>
+              <Text style={styles.default_text}>Budget : {numeral(this.state.film.budget).format('0,0[.]00 $')}</Text>
+              <Text style={styles.default_text}>Genre(s) : {this.state.film.genres.map(function(genre){
+                    return genre.name;
+                  }).join(" / ")}
+                </Text>
+              <Text style={styles.default_text}>Companie(s) : {this.state.film.production_companies.map(function(company){
+                  return company.name;
+                }).join(" / ")}
+              </Text>
            </ScrollView>
          )
        }
@@ -53,7 +61,7 @@ class FilmDetail extends React.Component {
       // Si isLoading vaut true, on affiche le chargement à l'écran
       return (
         <View style={styles.loading_container}>
-          <ActivityIndicator size='large' />
+            <ActivityIndicator size="large" color="#00ff00" />
         </View>
       )
     }
