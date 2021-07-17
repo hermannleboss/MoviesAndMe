@@ -5,20 +5,17 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import { getImageFromApi } from "../API/TMDBApi";
 
 class FilmItem extends React.Component {
-
-/*
-  _displayFavoriteImage(){
-    var sourceImage=require('../Images/ic_favorite_border.png')
-    if(this.props.favoritesFilm.findIndex(item=>item.id===this.state.film.id)!== -1){
-      sourceImage=require('../Images/ic_favorite.png')
+  _displayFavoriteImage() {
+    if (this.props.isFilmFavorite) {
+      // Si la props isFilmFavorite vaut true, on affiche le 🖤
+      return (
+        <Image
+          style={styles.favorite_image}
+          source={require("../Images/ic_favorite.png")}
+        />
+      );
     }
-    return (
-      <Image
-        source={sourceImage}
-        style={styles.title_favorite_image}
-      />
-    )
-  }*/
+  }
   render() {
     const { film, displayDetailForFilm } = this.props;
     return (
@@ -32,14 +29,8 @@ class FilmItem extends React.Component {
         />
         <View style={styles.content_container}>
           <View style={styles.header_container}>
-            <View style={styles.title_container}>
-                
-              <Image
-                style={styles.title_favorite_image}
-                source={require("../Images/ic_favorite_border.png")}
-              />
+              {this._displayFavoriteImage()}
               <Text style={styles.title_text}>{film.title}</Text>
-            </View>
             <Text style={styles.vote_text}>{film.vote_average}</Text>
           </View>
           <View style={styles.description_container}>
@@ -83,17 +74,15 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     paddingRight: 5,
   },
-  title_container:{
-    flex: 1, 
-    flexDirection:"row"
-  }
-  ,
-  title_favorite_image:{
-    flex:1,
-    height:40,
-    width: 40
-  }
-  ,
+  title_container: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  favorite_image: {
+    width: 25,
+    height: 25,
+    marginRight: 5
+  },
   vote_text: {
     fontWeight: "bold",
     fontSize: 26,
