@@ -4,6 +4,8 @@ import films from '../Helpers/filmsData'
 import FilmItem from './FilmItem'
 import {getFilmsFromApiWithSearchedText} from '../API/TMDBApi'
 
+import { connect } from "react-redux";
+
 class Search extends Component {
 
     constructor(props) {
@@ -77,6 +79,7 @@ class Search extends Component {
                     data={this.state.films}
                     //J'ai ajouter key={data} pour résoudre ce problème: Encountered two children with the same key
                     key={data}
+                    extraData={this.props.favoritesFilm}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({item}) =>
                       <FilmItem
