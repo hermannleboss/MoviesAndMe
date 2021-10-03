@@ -24,7 +24,20 @@ class FilmDetail extends React.Component {
     };
   }
   componentDidMount() {
-    console.log("Component FilmDetail monté");
+    const favoriteFilmIndex = this.props.favoritesFilm.findIndex(
+      (item) => item.id === this.props.route.params.idFilm
+    );
+    if (favoriteFilmIndex !== -1) {
+      // Film déjà dans nos favoris, on a déjà son détail
+      // Pas besoin d'appeler l'API ici, on ajoute le détail stocké dans notre state global au state de notre component
+      this.setState({
+        film: this.props.favoritesFilm[favoriteFilmIndex],
+      });
+      return;
+    }
+    // Le film n'est pas dans nos favoris, on n'a pas son détail
+    // On appelle l'API pour récupérer son détail
+    this.setState({ isLoading: true });
     getFilmDetailFromApi(this.props.route.params.idFilm).then((data) => {
       this.setState({
         film: data,
@@ -39,24 +52,23 @@ class FilmDetail extends React.Component {
     this.props.dispatch(action);
   }
   componentDidUpdate() {
-    console.log(this.props.favoritesFilm);
+   // console.log(this.props.favoritesFilm);
   }
-  
-  _displayFavoriteImage(){
-    var sourceImage=require('../Images/ic_favorite_border.png')
-    if(this.props.favoritesFilm.findIndex(item=>item.id===this.state.film.id)!== -1){
-      sourceImage=require('../Images/ic_favorite.png')
+
+  _displayFavoriteImage() {
+    var sourceImage = require("../Images/ic_favorite_border.png");
+    if (
+      this.props.favoritesFilm.findIndex(
+        (item) => item.id === this.state.film.id
+      ) !== -1
+    ) {
+      sourceImage = require("../Images/ic_favorite.png");
     }
-    return (
-      <Image
-        source={sourceImage}
-        style={styles.favorites_image}
-      />
-    )
+    return <Image source={sourceImage} style={styles.favorites_image} />;
   }
 
   _displayFilm() {
-    console.log("Display Film");
+    //console.log("Display Film");
     if (this.state.film != undefined) {
       return (
         <ScrollView
@@ -116,7 +128,7 @@ class FilmDetail extends React.Component {
     }
   }
   _displayLoading() {
-    console.log("Display Loadin");
+    //console.log("Display Loadin");
     if (this.state.isLoading) {
       // Si isLoading vaut true, on affiche le chargement à l'écran
       return (
@@ -183,10 +195,10 @@ const styles = StyleSheet.create({
   favorite_container: {
     alignItems: "center",
   },
-  favorite_image:{
+  favorite_image: {
     width: 40,
-    height: 40
-  }
+    height: 40,
+  },
 });
 
 const mapStateToProps = (state) => {

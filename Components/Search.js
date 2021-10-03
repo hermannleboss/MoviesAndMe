@@ -4,8 +4,6 @@ import {
   View,
   Button,
   TextInput,
-  FlatList,
-  Text,
   ActivityIndicator,
 } from "react-native";
 import films from "../Helpers/filmsData";
@@ -76,6 +74,7 @@ class Search extends Component {
   }
 
   render() {
+    //console.log("this.state.films"+ this.state.films);
     return (
       <View style={styles.main_container}>
         <TextInput
@@ -91,6 +90,7 @@ class Search extends Component {
           loadFilms={this._loadFilms} // _loadFilm charge les films suivants, ça concerne l'API, le component FilmList va juste appeler cette méthode quand l'utilisateur aura parcouru tous les films et c'est le component Search qui lui fournira les films suivants
           page={this.page}
           totalPages={this.totalPages} // les infos page et totalPages vont être utile, côté component FilmList, pour ne pas déclencher l'évènement pour charger plus de film si on a atteint la dernière page
+          favoriteList={false}
         />
         {this._displayLoading()}
       </View>

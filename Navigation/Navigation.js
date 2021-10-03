@@ -25,6 +25,18 @@ const SearchStackNavigator = () => {
     </Stack.Navigator>
   );
 };
+const FavoritesStackNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Favorites"
+        component={Favorites}
+        options={{ title: "Favoris" }}
+      />
+      <Stack.Screen name="FilmDetail" component={FilmDetail} />
+    </Stack.Navigator>
+  );
+};
 const Tab = createBottomTabNavigator();
 
 const MoviesTabNavigator = () => {
@@ -54,7 +66,7 @@ const MoviesTabNavigator = () => {
         />
         <Tab.Screen
           name="Favoris"
-          component={Favorites}
+          component={FavoritesStackNavigator}
           options={{
             tabBarIcon: () => {
               return (
